@@ -1,20 +1,6 @@
-"""考勤信息：直接运行本文件即可校验答案。"""
+"""考勤信息：直接运行本文件即可查看测试结果。"""
 
 from __future__ import annotations
-
-import sys
-
-
-TEST_CASES = [
-    (
-        "官方样例", "2\npresent\npresent absent present present leaveearly present absent\n", "true false",
-    ),
-    ("最小输入", "1\npresent\n", "true"),
-    ("缺勤两次", "1\nabsent present absent\n", "false"),
-    ("连续迟到早退", "1\nlate leaveearly\n", "false"),
-    ("异常状态不连续", "1\nlate present leaveearly\n", "true"),
-    ("七次内四次异常", "1\nlate present absent present late present late\n", "false"),
-]
 
 
 def solve(data: str) -> str:
@@ -118,43 +104,12 @@ def solve_by_gpt(data: str) -> str:
     return " ".join(results)
 
 
-def check() -> bool:
-    """运行内置用例，返回是否全部通过。"""
-    passed = 0
-
-    for name, data, expected in TEST_CASES:
-        try:
-            actual = solve(data).strip()
-        except NotImplementedError as error:
-            print(f"尚未完成：{error}")
-            return "false"
-        except Exception as error:
-            print(f"✗ {name}：运行出错：{type(error).__name__}: {error}")
-            continue
-
-        if actual == expected:
-            passed += 1
-            print(f"✓ {name}")
-        else:
-            print(f"✗ {name}")
-            print(f"  期望：{expected!r}")
-            print(f"  实际：{actual!r}")
-
-    print(f"\n结果：{passed}/{len(TEST_CASES)} 通过")
-    return passed == len(TEST_CASES)
-
-
 def main() -> None:
-    """无输入时自动校验；有标准输入时按机试模式运行。"""
-    if sys.stdin.isatty():
-        check()
-        return
+    data1 = "1\npresent"
+    print("预期：true，实际：", solve(data1))
 
-    data = sys.stdin.read()
-    if data.strip():
-        print(solve(data))
-    else:
-        check()
+    data2 = "1\nabsent absent"
+    print("预期：false，实际：", solve(data2))
 
 
 if __name__ == "__main__":

@@ -1,22 +1,17 @@
-"""题目名称。
-
-解题前先在同目录 README.md 中写清思路和复杂度。
-"""
+"""题目名称：直接运行本文件即可查看测试结果。"""
 
 from __future__ import annotations
 
-import sys
-
 
 def solve(data: str) -> str:
-    """解析输入并返回最终输出文本。"""
-    raise NotImplementedError("请实现 solve")
+    """解析输入并返回答案。"""
+    raise NotImplementedError("请实现 solve(data)")
 
 
 def main() -> None:
-    result = solve(sys.stdin.read())
-    if result:
-        print(result)
+    data = ""
+    expected = ""
+    print(f"预期：{expected}，实际：{solve(data)}")
 
 
 if __name__ == "__main__":

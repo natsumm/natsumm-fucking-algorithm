@@ -3,30 +3,23 @@
 from __future__ import annotations
 
 import argparse
-import re
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LEVELS = {
-    1: "level_01_basics",
-    2: "level_02_simulation",
-    3: "level_03_two_pointers",
-    4: "level_04_data_structures",
-    5: "level_05_search",
-    6: "level_06_dp_greedy",
-    7: "level_07_graph_tree",
-}
 
 
-def valid_slug(value: str) -> str:
-    if not re.fullmatch(r"[a-z0-9]+(?:_[a-z0-9]+)*", value):
-        raise argparse.ArgumentTypeError("slug 只能包含小写字母、数字和下划线")
+def valid_dir_name(value: str) -> str:
+    if not value or "/" in value or "\\" in value or value in {".", ".."}:
+        raise argparse.ArgumentTypeError("目录名不能为空，且不能包含路径分隔符")
     return value
 
 
-def create_problem(level: int, slug: str, title: str) -> Path:
-    target = ROOT / "practice" / LEVELS[level] / slug
+def create_problem(number: str, title: str) -> Path:
+    valid_dir_name(number)
+    valid_dir_name(title)
+    dir_name = f"{number}_{title}" if number != "-" else title
+    target = ROOT / "practice" / dir_name
     if target.exists():
         raise FileExistsError(f"题目目录已存在：{target}")
 
@@ -42,8 +35,7 @@ def create_problem(level: int, slug: str, title: str) -> Path:
     )
     (target / "test_solution.py").write_text(
         test_template.replace("题目名称", title, 1)
-        .replace("__LEVEL_DIR__", LEVELS[level], 1)
-        .replace("__SLUG__", slug, 1),
+        .replace("practice.<题目目录名>", f"practice.{dir_name}", 1),
         encoding="utf-8",
     )
     return target
@@ -51,13 +43,12 @@ def create_problem(level: int, slug: str, title: str) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="创建一道算法练习题目录")
-    parser.add_argument("level", type=int, choices=LEVELS, help="学习等级 1-7")
-    parser.add_argument("slug", type=valid_slug, help="英文目录名，如 attendance")
-    parser.add_argument("title", help="题目显示名称")
+    parser.add_argument("number", help="题目编号；无编号的题传 -")
+    parser.add_argument("title", help="中文题名，目录名形如 <编号>_<题名>")
     args = parser.parse_args()
 
     try:
-        target = create_problem(args.level, args.slug, args.title)
+        target = create_problem(args.number, args.title)
     except FileExistsError as error:
         parser.error(str(error))
     print(f"已创建：{target.relative_to(ROOT)}")

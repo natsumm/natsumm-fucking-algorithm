@@ -25,13 +25,13 @@ The rules below describe the existing exercises created before the pytest workfl
 
 ## Coding Agent problem initialization
 
-When the user asks a coding agent to initialize a new LeetCode problem, the agent creates exactly one new directory `practice/level_XX_topic/<slug>/` (reusing the existing level directories and snake_case slugs) with exactly three files, and changes nothing else.
+When the user asks a coding agent to initialize a new LeetCode problem, the agent creates exactly one new directory `practice/<编号>_<中文题名>/` (e.g. `practice/560_和为K的子数组`; problems without a number use the Chinese title alone, e.g. `practice/考勤信息`) with exactly three files, and changes nothing else.
 
 Files to create:
 
 - `README.md` — problem statement only: source, problem number, English name, difficulty, tags, link, the full original statement, input/output specification, constraints, and official examples.
 - `solution.py` — LeetCode code template only: `from __future__ import annotations` plus a `class Solution` whose methods are the problem's method signature(s). Every method body is exactly `raise NotImplementedError("Solution 尚未实现")`.
-- `test_solution.py` — pytest cases for the official examples and a few edge cases. Import the template by full module path (`from practice.<level_dir>.<slug>.solution import Solution`) and keep the module-level marker `pytestmark = pytest.mark.xfail(raises=NotImplementedError, reason="Solution 尚未实现")`.
+- `test_solution.py` — pytest cases for the official examples and a few edge cases. Import the solution module via `Solution = importlib.import_module("practice.<编号>_<中文题名>.solution").Solution` (directory names starting with a digit are not valid import statements, so importlib with a string path is required) and keep the module-level marker `pytestmark = pytest.mark.xfail(raises=NotImplementedError, reason="Solution 尚未实现")`.
 
 Hard constraints while initializing:
 
@@ -41,5 +41,5 @@ Hard constraints while initializing:
 
 Verification after initialization:
 
-- Run `python3.12 -m pytest practice/<level_dir>/<slug>` for the single problem and `python3.12 -m pytest` for the full suite.
+- Run `python3.12 -m pytest practice/<编号>_<中文题名>` for the single problem and `python3.12 -m pytest` for the full suite.
 - Report results by category: collection/import errors (`ERROR`) are environment problems to fix; `xfailed` is expected because the solution is not implemented; `failed` means a real test failure.

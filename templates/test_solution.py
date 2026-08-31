@@ -6,9 +6,12 @@ Solution 尚未实现：模块级 xfail 标记让未实现状态显示为 xfaile
 
 from __future__ import annotations
 
+import importlib
+
 import pytest
 
-from practice.__LEVEL_DIR__.__SLUG__.solution import Solution
+# 目录名以数字开头（如 560_和为K的子数组），无法使用 import 语句，改用 importlib 按字符串导入
+Solution = importlib.import_module("practice.<题目目录名>.solution").Solution
 
 pytestmark = pytest.mark.xfail(
     raises=NotImplementedError, reason="Solution 尚未实现"

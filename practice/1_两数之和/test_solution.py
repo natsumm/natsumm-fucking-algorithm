@@ -6,9 +6,11 @@ Solution 尚未实现：模块级 xfail 标记让未实现状态显示为 xfaile
 
 from __future__ import annotations
 
+import importlib
+
 import pytest
 
-from practice.level_01_basics.two_sum.solution import Solution
+Solution = importlib.import_module("practice.1_两数之和.solution").Solution
 
 pytestmark = pytest.mark.xfail(
     raises=NotImplementedError, reason="Solution 尚未实现"

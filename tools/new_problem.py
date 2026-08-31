@@ -31,16 +31,21 @@ def create_problem(level: int, slug: str, title: str) -> Path:
         raise FileExistsError(f"题目目录已存在：{target}")
 
     target.mkdir(parents=True)
-    problem_template = (ROOT / "templates" / "problem.md").read_text(encoding="utf-8")
-    solution_template = (ROOT / "templates" / "solution.py").read_text(encoding="utf-8")
+    problem_template = (ROOT / "templates" / "leetcode_problem.md").read_text(encoding="utf-8")
+    solution_template = (ROOT / "templates" / "leetcode_solution.py").read_text(encoding="utf-8")
+    test_template = (ROOT / "templates" / "test_solution.py").read_text(encoding="utf-8")
     (target / "README.md").write_text(
         problem_template.replace("# 题目名称", f"# {title}", 1), encoding="utf-8"
     )
     (target / "solution.py").write_text(
         solution_template.replace("题目名称", title, 1), encoding="utf-8"
     )
-    (target / "sample_input.txt").write_text("", encoding="utf-8")
-    (target / "sample_output.txt").write_text("", encoding="utf-8")
+    (target / "test_solution.py").write_text(
+        test_template.replace("题目名称", title, 1)
+        .replace("__LEVEL_DIR__", LEVELS[level], 1)
+        .replace("__SLUG__", slug, 1),
+        encoding="utf-8",
+    )
     return target
 
 

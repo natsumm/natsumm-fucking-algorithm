@@ -25,17 +25,19 @@ templates/             单题模板
 notes/                 进度、错题和知识笔记
 tools/new_problem.py   创建新练习的脚手架
 tests/                 项目工具测试
+pytest.ini             pytest 配置，支持单题与全量测试
 ```
 
 ## 开始第一题
 
 ```powershell
-python tools/new_problem.py 1 attendance "考勤信息"
-Get-Content practice/level_01_basics/attendance/sample_input.txt | python practice/level_01_basics/attendance/solution.py
-python -m unittest discover -s tests -v
+python3.12 tools/new_problem.py 1 attendance "考勤信息"
+python3.12 practice/level_01_basics/attendance/solution.py
+python3.12 -m pytest                                             # 全部测试
+python3.12 -m pytest practice/level_01_basics/attendance         # 单题测试
 ```
 
-创建后，先填写题目的 `README.md`，再实现 `solution.py`。提交前更新 [notes/progress.md](notes/progress.md)，做错的原因写入 [notes/mistakes.md](notes/mistakes.md)。
+直接运行每道题的 `solution.py`，`main()` 会执行代码中直接写入的少量测试 case，并显示预期与实际结果。每道题通常只保留 `README.md` 和 `solution.py`，无需额外维护样例输入、输出文件。由 Coding Agent 初始化的新题目使用三件套结构（`README.md` + `solution.py` + `test_solution.py`），通过 pytest 验证：解法未实现时测试显示 `xfailed`（预期失败），实现后删除测试文件顶部的 `pytestmark` 行即可转绿。提交前更新 [notes/progress.md](notes/progress.md)，做错的原因写入 [notes/mistakes.md](notes/mistakes.md)。
 
 ## 每题练习循环
 

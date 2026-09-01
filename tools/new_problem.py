@@ -24,14 +24,14 @@ def create_problem(number: str, title: str) -> Path:
         raise FileExistsError(f"题目目录已存在：{target}")
 
     target.mkdir(parents=True)
-    problem_template = (ROOT / "templates" / "leetcode_problem.md").read_text(encoding="utf-8")
     solution_template = (ROOT / "templates" / "leetcode_solution.py").read_text(encoding="utf-8")
     test_template = (ROOT / "templates" / "test_solution.py").read_text(encoding="utf-8")
-    (target / "README.md").write_text(
-        problem_template.replace("# 题目名称", f"# {title}", 1), encoding="utf-8"
-    )
+    header = f"{title}（LeetCode {number}）" if number != "-" else title
     (target / "solution.py").write_text(
-        solution_template.replace("题目名称", title, 1), encoding="utf-8"
+        solution_template.replace("题目名称（题号）", header, 1).replace(
+            "practice/<题目目录名>", f"practice/{dir_name}", 1
+        ),
+        encoding="utf-8",
     )
     (target / "test_solution.py").write_text(
         test_template.replace("题目名称", title, 1)

@@ -15,22 +15,22 @@
 
 The rules below describe the existing exercises created before the pytest workflow. New problems initialized by a coding agent follow the next section instead.
 
-- Keep each algorithm exercise simple: normally use only `README.md` and `solution.py`.
+- Keep each algorithm exercise simple: normally use only `solution.py`.
+- Put the problem identification (title, source, difficulty, tags, link), the problem statement, practice notes, and the command to run this problem's tests in the module docstring at the top of `solution.py`. Do not create a per-problem `README.md`.
 - Put the algorithm and input parsing in `solve(data: str) -> str`.
 - Do not read from `sys.stdin` in an exercise's `main()`.
 - Write a small number of test-case input strings directly in `main()` and print both the expected and actual results.
 - Test-case strings must follow the problem's real input format, including required newlines.
 - Prefer clear, explicit cases over a generic test framework; do not add `TEST_CASES`, `check()`, terminal detection, or elaborate validation unless specifically needed.
-- Do not create `sample_input.txt` or `sample_output.txt`; document the official sample in `README.md` or place it directly in `main()`.
+- Do not create `sample_input.txt` or `sample_output.txt`; place the official sample directly in `main()`.
 
 ## Coding Agent problem initialization
 
-When the user asks a coding agent to initialize a new LeetCode problem, the agent creates exactly one new directory `practice/<编号>_<中文题名>/` (e.g. `practice/560_和为K的子数组`; problems without a number use the Chinese title alone, e.g. `practice/考勤信息`) with exactly three files, and changes nothing else.
+When the user asks a coding agent to initialize a new LeetCode problem, the agent creates exactly one new directory `practice/<编号>_<中文题名>/` (e.g. `practice/560_和为K的子数组`; problems without a number use the Chinese title alone, e.g. `practice/考勤信息`) with exactly two files, and changes nothing else. Do NOT create a `README.md` for the problem — the problem statement lives in `solution.py`'s module docstring.
 
 Files to create:
 
-- `README.md` — problem statement only: source, problem number, English name, difficulty, tags, link, the full original statement, input/output specification, constraints, and official examples.
-- `solution.py` — LeetCode code template only: `from __future__ import annotations` plus a `class Solution` whose methods are the problem's method signature(s). Every method body is exactly `raise NotImplementedError("Solution 尚未实现")`.
+- `solution.py` — the module docstring identifies the problem and carries the full statement, in this order: a title line (`<中文题名>（LeetCode <编号>）`; drop the parenthetical when there is no number), a metadata list (`- 来源：`, `- 题号：`, `- 英文名：`, `- 难度：`, `- 核心标签：`, `- 链接：`, `- 运行本题目测试：python3.12 -m pytest practice/<编号>_<中文题名>`), then `题目描述：` / `输入与输出：` / `示例 N：` / `提示：` sections containing the full original statement, input/output specification, constraints, and official examples. After the docstring: `from __future__ import annotations` plus a `class Solution` whose methods are the problem's method signature(s). Every method body is exactly `raise NotImplementedError("Solution 尚未实现")`.
 - `test_solution.py` — pytest cases for the official examples and a few edge cases. Import the solution module via `Solution = importlib.import_module("practice.<编号>_<中文题名>.solution").Solution` (directory names starting with a digit are not valid import statements, so importlib with a string path is required) and keep the module-level marker `pytestmark = pytest.mark.xfail(raises=NotImplementedError, reason="Solution 尚未实现")`.
 
 Hard constraints while initializing:

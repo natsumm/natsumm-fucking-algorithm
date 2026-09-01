@@ -12,9 +12,9 @@ import pytest
 
 Solution = importlib.import_module("practice.560_和为K的子数组.solution").Solution
 
-pytestmark = pytest.mark.xfail(
-    raises=NotImplementedError, reason="Solution 尚未实现"
-)
+# pytestmark = pytest.mark.xfail(
+#     raises=NotImplementedError, reason="Solution 尚未实现"
+# )
 
 
 def test_example_1() -> None:

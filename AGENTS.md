@@ -31,15 +31,14 @@ When the user asks a coding agent to initialize a new LeetCode problem, the agen
 Files to create:
 
 - `solution.py` — the module docstring identifies the problem and carries the full statement, in this order: a title line (`<中文题名>（LeetCode <编号>）`; drop the parenthetical when there is no number), a metadata list (`- 来源：`, `- 题号：`, `- 英文名：`, `- 难度：`, `- 核心标签：`, `- 链接：`, `- 运行本题目测试：python3.12 -m pytest practice/<编号>_<中文题名>`), then `题目描述：` / `输入与输出：` / `示例 N：` / `提示：` sections containing the full original statement, input/output specification, constraints, and official examples. After the docstring: `from __future__ import annotations` plus a `class Solution` whose methods are the problem's method signature(s). Every method body is exactly `raise NotImplementedError("Solution 尚未实现")`.
-- `test_solution.py` — pytest cases for the official examples and a few edge cases. Import the solution module via `Solution = importlib.import_module("practice.<编号>_<中文题名>.solution").Solution` (directory names starting with a digit are not valid import statements, so importlib with a string path is required) and keep the module-level marker `pytestmark = pytest.mark.xfail(raises=NotImplementedError, reason="Solution 尚未实现")`.
+- `test_solution.py` — pytest cases for the official examples and a few edge cases. Import the solution module via `Solution = importlib.import_module("practice.<编号>_<中文题名>.solution").Solution` (directory names starting with a digit are not valid import statements, so importlib with a string path is required). Do not add a `pytestmark` xfail marker.
 
 Hard constraints while initializing:
 
 - Do NOT implement any algorithm. Do NOT write pseudocode, hints, solution ideas, complexity analysis, or reference answers in any file, comment, or docstring.
 - Do NOT modify existing files (README.md, roadmap.md, notes/, templates/, tools/, existing problems) and do NOT create files outside the new problem directory.
-- Do NOT remove or weaken the xfail marker; the user removes it after implementing the solution.
 
 Verification after initialization:
 
 - Run `python3.12 -m pytest practice/<编号>_<中文题名>` for the single problem and `python3.12 -m pytest` for the full suite.
-- Report results by category: collection/import errors (`ERROR`) are environment problems to fix; `xfailed` is expected because the solution is not implemented; `failed` means a real test failure.
+- Report results by category: collection/import errors (`ERROR`) are environment problems to fix; `failed` with `NotImplementedError` is expected because the solution is not implemented; any other `failed` result means a real test failure.

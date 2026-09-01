@@ -36,7 +36,7 @@ python3.12 -m pytest practice/560_和为K的子数组   # 单题测试
 python3.12 -m pytest                             # 全部测试
 ```
 
-每道题的题目标识（来源、难度、标签、链接）、完整题面、练习记录和运行本题目测试的命令统一写在 `solution.py` 开头的模块 docstring 中，不单独创建题目 README。直接运行 `solution.py` 时，`main()` 会执行代码中直接写入的少量测试 case，并显示预期与实际结果，无需额外维护样例输入、输出文件。由 Coding Agent 初始化的新题目使用两件套结构（`solution.py` + `test_solution.py`），通过 pytest 验证：解法未实现时测试显示 `xfailed`（预期失败），实现后删除测试文件顶部的 `pytestmark` 行即可转绿。提交前更新 [notes/progress.md](notes/progress.md)，做错的原因写入 [notes/mistakes.md](notes/mistakes.md)。
+每道题的题目标识（来源、难度、标签、链接）、完整题面、练习记录和运行本题目测试的命令统一写在 `solution.py` 开头的模块 docstring 中，不单独创建题目 README。直接运行 `solution.py` 时，`main()` 会执行代码中直接写入的少量测试 case，并显示预期与实际结果，无需额外维护样例输入、输出文件。由 Coding Agent 初始化的新题目使用两件套结构（`solution.py` + `test_solution.py`），通过 pytest 验证：解法未实现时测试因 `NotImplementedError` 失败，实现后即可转绿。提交前更新 [notes/progress.md](notes/progress.md)，做错的原因写入 [notes/mistakes.md](notes/mistakes.md)。
 
 ## 每题练习循环
 

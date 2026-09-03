@@ -47,3 +47,32 @@ from __future__ import annotations
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
         raise NotImplementedError("Solution 尚未实现")
+
+    def is_cover(self, tmp, target):
+        for char, need_count in target.items():
+            # tmp 中 char 的数量达到 need_count 时继续检查
+            # 数量不足时立即返回 False
+            if tmp.get(char, 0) < need_count:
+                return False
+        return True
+
+    def violentEnumeration(self, s: str, t: str) -> str:
+        target = {}
+        result = []
+        for char in t:
+            target[char] = target.get(char, 0) + 1
+        for i in range(len(s)):
+            tmp = {}
+            if s[i] in target:
+                tmp[s[i]] = 1
+            if self.is_cover(tmp, target):
+                result.append(s[i:i+1])
+                break
+            for right in range(i+1, len(s)):
+                if s[right] in target:
+                    tmp[s[right]] = tmp.get(s[right], 0) + 1
+                if self.is_cover(tmp, target):
+                    result.append(s[i:right+1])
+                    break
+
+        return min(result, key=len) if result else ""
